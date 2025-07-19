@@ -6,10 +6,11 @@ import {
   PiTrashLight,
   PiPencilSimpleLineLight,
 } from "react-icons/pi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function ProductsAdminPage() {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(0);
 
   useEffect(() => {
     axios
@@ -21,7 +22,9 @@ export default function ProductsAdminPage() {
         console.error("Error fetching products:", error);
         toast.error("Failed to load products. Please try again.");
       });
-  }, []);
+  }, [loading]);
+
+  const navigate = useNavigate();
 
   return (
     <div className="w-full h-full p-6 bg-white/60 backdrop-blur-md">
@@ -85,7 +88,38 @@ export default function ProductsAdminPage() {
                     <PiPencilSimpleLineLight className="text-lg" />
                   </button>
                   <button
-                    onClick={() => console.log("Delete", product.productId)}
+                    onClick={() => {
+                      const token = localStorage.getItem("token");
+                      if (token === null) {
+                        navigate("/login");
+                        toast.error(
+                          "You must be logged in to delete a product."
+                        );
+                        return;
+                      }
+                      axios
+                        .delete(
+                          import.meta.env.VITE_BACKEND_URL +
+                            `/api/products/${product.productId}`,
+                          {
+                            headers: {
+                              Authorization: "Bearer " + token,
+                            },
+                          }
+                        )
+                        .then(() => {
+                          //setProducts(products.filter(p => p.productId !== product.productId));
+                          toast.success("Product deleted successfully.");
+                          setLoading(loading + 1); // Trigger re-fetch
+                          console.log("Product deleted successfully.");
+                        })
+                        .catch((error) => {
+                          console.error("Error deleting product:", error);
+                          toast.error(
+                            "Failed to delete product. Please try again."
+                          );
+                        });
+                    }}
                     className="p-2 rounded-full hover:bg-red-100 text-red-600 transition"
                     title="Delete"
                   >
