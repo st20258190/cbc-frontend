@@ -5,6 +5,7 @@ import { PiUsersFourLight } from "react-icons/pi";
 import { IoSettingsOutline } from "react-icons/io5";
 import ProductsAdminPage from "./admin/productsAdminPage";
 import AddProductAdminPage from "./admin/addproductAdminPage";
+import UpdateProductAdminPage from "./admin/updateProductAdmin";
 
 export default function AdminPage() {
   return (
@@ -58,6 +59,7 @@ export default function AdminPage() {
           <Route path="/" element={<h1>Admin Dashboard</h1>} />
           <Route path="/products" element={<ProductsAdminPage />} />
           <Route path="/newProduct" element={<AddProductAdminPage />} />
+          <Route path="/updateProduct" element={<UpdateProductAdminPage />} />
           <Route path="/orders" element={<h1>Orders</h1>} />
         </Routes>
       </div>

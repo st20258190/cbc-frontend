@@ -81,7 +81,9 @@ export default function ProductsAdminPage() {
                 </td>
                 <td className="px-4 py-3 flex justify-center gap-2">
                   <button
-                    onClick={() => console.log("Edit", product.productId)}
+                    onClick={() =>
+                      navigate(`/admin/updateProduct`, { state: product })
+                    }
                     className="p-2 rounded-full hover:bg-rose-100 text-rose-600 transition"
                     title="Edit"
                   >
